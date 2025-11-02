@@ -40,7 +40,7 @@ The library is written in TypeScript and compiled to CommonJS JavaScript for bac
 3. **Full type safety** - Comprehensive type definitions for all APIs
 4. **CommonJS output** - Maintains backward compatibility with existing users
 5. **AWS SDK v3** - Uses modular @aws-sdk/client-rds-data package (peer dependency)
-6. **Minimal dependencies** - Only `sqlstring` and `pg-escape` in production
+6. **Minimal dependencies** - Only `sqlstring` in production (PostgreSQL escaping is handled internally)
 7. **Functional approach** - Uses closures and function composition
 8. **Command-based wrapper** - Uses AWS SDK v3 Commands with client.send() pattern
 
@@ -79,7 +79,7 @@ Supported types:
 **Named Identifiers** (params.ts)
 - Uses `::` prefix for dynamic table/column names
 - Auto-escapes using engine-specific escaping:
-  - PostgreSQL: `pg-escape.ident()` produces `"identifier"`
+  - PostgreSQL: Internal `ident()` function produces `"identifier"` (from src/pg-escape.ts)
   - MySQL: `sqlstring.escapeId()` produces `` `identifier` ``
 - Example: `::tableName` becomes `` `table_value` `` (MySQL) or `"table_value"` (PostgreSQL)
 
@@ -193,14 +193,13 @@ Supported types:
 
 ### Production
 - **sqlstring** (^2.3.2) - SQL identifier escaping and string formatting (MySQL)
-- **pg-escape** (^0.2.0) - PostgreSQL identifier escaping
+- **Note**: PostgreSQL escaping is handled by internal `src/pg-escape.ts` module (no external dependency)
 
 ### Development
 - **@aws-sdk/client-rds-data** (^3.712.0) - AWS SDK v3 RDS Data API client (also peer dep)
 - **typescript** (^5.9.3) - TypeScript compiler
 - **@types/node** (^24.6.2) - Node.js type definitions
 - **@types/sqlstring** (^2.3.2) - sqlstring type definitions
-- **@types/pg-escape** (^0.2.3) - pg-escape type definitions
 - **@typescript-eslint/parser** (^8.45.0) - TypeScript ESLint parser
 - **@typescript-eslint/eslint-plugin** (^8.45.0) - TypeScript ESLint rules
 - **eslint** (^8.12.0) + plugins - Linting
@@ -345,9 +344,11 @@ query('INSERT INTO table (text_array) VALUES (ARRAY[:tag1, :tag2, :tag3])', {
 │   ├── results.ts           # Result formatting and record processing
 │   ├── transaction.ts       # Transaction management
 │   ├── utils.ts             # Utility functions
+│   ├── pg-escape.ts         # Internal PostgreSQL escaping utilities (no external deps)
 │   ├── params.test.ts       # Parameter processing tests
 │   ├── query.test.ts        # Query execution tests
 │   ├── results.test.ts      # Result formatting tests
+│   ├── pg-escape.test.ts    # PostgreSQL escape function tests
 │   └── utils.test.ts        # Utility function tests
 ├── integration-tests/
 │   ├── setup.ts                      # Integration test setup
