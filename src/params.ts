@@ -5,7 +5,7 @@
  */
 
 import sqlString from 'sqlstring'
-import pgEscape from 'pg-escape'
+import * as pgEscape from './pg-escape'
 import type {
   InternalConfig,
   Parameters,

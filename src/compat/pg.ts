@@ -9,7 +9,7 @@
  */
 
 import { EventEmitter } from 'events'
-import pgEscape from 'pg-escape'
+import * as pgEscape from '../pg-escape'
 import { init } from '../client'
 import type { DataAPIClientConfig, DataAPIClient, QueryResult as DataAPIQueryResult } from '../types'
 import { mapToPostgresError, type PostgresError } from './errors'

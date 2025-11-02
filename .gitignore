@@ -22,3 +22,12 @@ tmp/
 dump.rdb
 .vscode
 .idea
+
+# AI coding assistant instruction files
+CLAUDE.md
+WARP.md
+.cursorrules
+cursor.md
+.aider*
+.copilot-instructions.md
+.windsurf
